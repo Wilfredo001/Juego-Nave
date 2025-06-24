@@ -1,30 +1,46 @@
+import SRC.Nave;
+
 public class Enemigo {
-    
-    private int x, y;
-    private int salud;
 
-    public Enemigo(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.salud = 100;
+    // Atributos
+    private String tipo;
+    private int vida;
+    private int daño;
+
+    // Constructor
+    public Enemigo(String tipo, int vida, int daño) {
+        this.tipo = tipo;
+        this.vida = vida;
+        this.daño = daño;
     }
 
-    public void mover(int dx, int dy) {
-        x += dx;
-        y += dy;
+    // Método para recibir daño de la nave
+    public void recibirDisparo(int cantidad) {
+        vida -= cantidad;
+        if (vida < 0) {
+            vida = 0;
+        }
+        System.out.println(tipo + " recibe " + cantidad + " de daño. Vida restante: " + vida);
     }
 
-    public void recibirDaño(int daño) {
-        salud -= daño;
-        if (salud < 0) salud = 0;
+    // Método para atacar a la nave
+    public void atacar(Nave nave) {
+        System.out.println(tipo + " ataca a la nave con " + daño + " de daño.");
+        nave.recibirDaño(daño);
     }
 
+    // Método para saber si sigue vivo
     public boolean estaVivo() {
-        return salud > 0;
+        return vida > 0;
     }
 
-    @Override
-    public String toString() {
-        return "Enemigo en (" + x + ", " + y + ") con salud: " + salud;
+    // Getter para el tipo (usado en Nave)
+    public String getTipo() {
+        return tipo;
+    }
+
+    // Getter para la vida (opcional)
+    public int getVida() {
+        return vida;
     }
 }
