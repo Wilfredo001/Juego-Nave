@@ -15,7 +15,37 @@ public class Nave {
         this.vida = vida;
         this.daño = daño;
     }
-    
+
+
+    //metodo moverse
+
+    public void interaccion(char interactuar){
+
+        char mvs = Character.toLowerCase(interactuar);
+
+        switch (mvs) {
+
+            case 'a': System.out.println(nombre+" se mueve hacia la izquierda");
+             break;
+            
+            case 'd': System.out.println(nombre+" se mueve hacia la derecha");
+             break;
+
+            case 's': System.out.println(nombre+" se mueve hacia arriba");
+             break;
+
+            case 'w': System.out.println(nombre+" se mueve hacia abajo");
+
+            default :System.out.println("use las teclas (a , d , s , w ) para moverse");    
+                
+                break;
+     
+        }
+
+    }
+
+
+
     //metodos atacar enemigo 
 
    /*  FALTA CLASE ENEMIGO PARA QUE ESTE NO DE ERROR
@@ -25,6 +55,8 @@ public class Nave {
         enemigo.recibirDisparo(daño);
 
     }*/
+
+
 
     //metodo recibir daño 
 
