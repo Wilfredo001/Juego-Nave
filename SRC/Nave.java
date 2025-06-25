@@ -1,4 +1,5 @@
  package SRC;
+ 
 
 public class Nave {
 
@@ -48,13 +49,13 @@ public class Nave {
 
     //metodos atacar enemigo 
 
-   /*  FALTA CLASE ENEMIGO PARA QUE ESTE NO DE ERROR
+     
    public void atacar(Enemigo enemigo){
 
         System.out.println(nombre+"ataca al enemigo"+ enemigo.getTipo());
         enemigo.recibirDisparo(daño);
 
-    }*/
+    }
 
 
 
