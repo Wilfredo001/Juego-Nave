@@ -52,7 +52,7 @@ public class Nave {
      
    public void atacar(Enemigo enemigo){
 
-        System.out.println(nombre+"ataca al enemigo"+ enemigo.getTipo());
+        System.out.println(nombre+" ataca al enemigo "+ enemigo.getTipo());
         enemigo.recibirDisparo(daño);
 
     }
@@ -67,7 +67,7 @@ public class Nave {
         if(vida < 0 ){
             vida = 0 ;
         }
-        System.out.println(nombre +" recive "+ cantidad +"de daño. Vida restante "+ vida);
+        System.out.println(nombre +" recive "+ cantidad +" de daño. Vida restante "+ vida);
     }
 
     //metodo seguir vivo 
@@ -76,4 +76,9 @@ public class Nave {
         return vida > 0 ; //se usa en main
 
     }
+
+    public int getVida() {
+    return vida;
+}
+
 }

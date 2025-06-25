@@ -43,4 +43,6 @@ public class Enemigo {
     public int getVida() {
         return vida;
     }
+
+    
 }
