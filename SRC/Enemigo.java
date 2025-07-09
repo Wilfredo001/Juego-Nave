@@ -1,20 +1,26 @@
 package SRC;
 
+import java.util.Random;
+
 public class Enemigo {
 
-    // Atributos
+    // atributos
     private String tipo;
     private int vida;
     private int daño;
+    private int fila;
+    private int columna;
 
-    // Constructor
-    public Enemigo(String tipo, int vida, int daño) {
+    // constructor
+    public Enemigo(String tipo, int vida, int daño, int fila, int columna) {
         this.tipo = tipo;
         this.vida = vida;
         this.daño = daño;
+        this.fila = fila;
+        this.columna = columna;
     }
 
-    // Método para recibir daño de la nave
+    // método para recibir daño de la nave
     public void recibirDisparo(int cantidad) {
         vida -= cantidad;
         if (vida < 0) {
@@ -23,26 +29,56 @@ public class Enemigo {
         System.out.println(tipo + " recibe " + cantidad + " de daño. Vida restante: " + vida);
     }
 
-    // Método para atacar a la nave
+    // método para atacar a la nave
     public void atacar(Nave nave) {
         System.out.println(tipo + " ataca a la nave con " + daño + " de daño.");
         nave.recibirDaño(daño);
     }
 
-    // Método para saber si sigue vivo
+    // método para saber si sigue vivo
     public boolean estaVivo() {
         return vida > 0;
     }
 
-    // Getter para el tipo (usado en Nave)
+    // getter para el tipo (usado en Nave)
     public String getTipo() {
         return tipo;
     }
 
-    // Getter para la vida (opcional)
+    // getter para la vida (opcional)
     public int getVida() {
         return vida;
     }
 
-    
+    public int getFila() {
+    return fila;
+}
+
+public int getColumna() {
+    return columna;
+}
+
+private Random random = new Random();
+
+public void moverAleatoriamente(int maxFilas, int maxColumnas) {
+    int direccion = random.nextInt(4); // 0 = arriba, 1 = abajo, 2 = izquierda, 3 = derecha
+
+    switch (direccion) {
+        case 0: // arriba
+            if (fila > 0) fila--;
+            break;
+        case 1: // abajo
+            if (fila < maxFilas - 1) fila++;
+            break;
+        case 2: // izquierda
+            if (columna > 0) columna--;
+            break;
+        case 3: // derecha
+            if (columna < maxColumnas - 1) columna++;
+            break;
+    }
+
+    System.out.println(tipo + " se mueve a (" + fila + ", " + columna + ")");
+}
+
 }

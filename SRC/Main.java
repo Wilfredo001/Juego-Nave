@@ -11,7 +11,7 @@ public class Main {
         String nombreNave = sc.nextLine();
 
         Nave jugador = new Nave(nombreNave, 100, 10);
-        Enemigo enemigo = new Enemigo("Alien", 80, 7);
+        Enemigo enemigo = new Enemigo("Alien", 80, 7, 0, 10);
         CampoDeBatalla campo1 = new CampoDeBatalla(nombreNave);
 
         System.out.println("\n¡Batalla iniciada!");
@@ -36,9 +36,8 @@ public class Main {
                 campo1.moverNave(accion); // mostrar mensaje + nombre 
             }
 
-              //todo del enemigo
+             campo1.moverEnemigo(); //<- metodo moverEnemigo 
 
-             //campo1.moverEnemigoAleatorio();  //<- falta metodo moverEnemigo 
             if (enemigo.estaVivo()) {
 
                 enemigo.atacar(jugador);

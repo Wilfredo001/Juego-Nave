@@ -1,11 +1,13 @@
 package SRC;
 
+
 public class CampoDeBatalla {
 
     private char[][] campo;
     private int navefil, navecol; 
     private int enemigofil, enemigocol;
     private String nombreNave;
+    private Enemigo enemigo;
 
     public CampoDeBatalla(String nombreNave) {
         this.nombreNave = nombreNave;
@@ -20,6 +22,8 @@ public class CampoDeBatalla {
         enemigofil = 0;
         enemigocol = campo[0].length/2;
 
+        enemigo = new Enemigo("Alien", 80, 7, enemigofil, enemigocol);
+
         actualizarCampo();
     }
 
@@ -33,7 +37,9 @@ public class CampoDeBatalla {
 
     private void actualizarCampo() {
         llenarCampoVacio();
-        campo[enemigofil][enemigocol] = 'E';
+        if (enemigo.estaVivo()) {
+            campo[enemigo.getFila()][enemigo.getColumna()] = 'E'; // ✅ usa la posición del enemigo real
+        }
         campo[navefil][navecol] = 'N';
     }
 
@@ -83,4 +89,14 @@ public class CampoDeBatalla {
               break;
         }
     }
+
+    public void moverEnemigo() {
+        enemigo.moverAleatoriamente(campo.length, campo[0].length);
+    }
+
+    // Getter para que el Main acceda al enemigo real
+    public Enemigo getEnemigo() {
+        return enemigo;
+    }
+    
 }
