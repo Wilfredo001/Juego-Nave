@@ -36,12 +36,17 @@ public class Main {
                 campo1.moverNave(accion); // mostrar mensaje + nombre 
             }
 
+              //todo del enemigo
+
              //campo1.moverEnemigoAleatorio();  //<- falta metodo moverEnemigo 
             if (enemigo.estaVivo()) {
 
                 enemigo.atacar(jugador);
            }
-
+        /* if (campo1.hayColision()) {
+            enemigo.colisionarConNave(jugador);
+              }  */
+  
         }
 
         if (!enemigo.estaVivo()) {
