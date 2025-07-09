@@ -47,7 +47,7 @@ public class CampoDeBatalla {
         }
     }
 
-    //metodo para mover la nave (con mensajes)
+    //metodo para mover la nave (con mensajes
     public void moverNave(char direccion){
         switch (direccion) {
             case 'w':

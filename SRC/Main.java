@@ -33,8 +33,15 @@ public class Main {
             if(accion == 'f'){
                 jugador.atacar(enemigo);
             } else {
-                campo1.moverNave(accion); // ahora muestra el mensaje con el nombre ingresado
+                campo1.moverNave(accion); // mostrar mensaje + nombre 
             }
+
+             //campo1.moverEnemigoAleatorio();  //<- falta metodo moverEnemigo 
+            if (enemigo.estaVivo()) {
+
+                enemigo.atacar(jugador);
+           }
+
         }
 
         if (!enemigo.estaVivo()) {
