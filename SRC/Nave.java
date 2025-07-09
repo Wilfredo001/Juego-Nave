@@ -1,84 +1,50 @@
- package SRC;
- 
+package SRC;
 
 public class Nave {
 
-    //Atributos 
-
+    // Atributos 
     private String nombre;
     private int vida;
     private int daño;
 
-    //constructor 
-
+    // Constructor 
     public Nave(String nombre, int vida, int daño){
         this.nombre = nombre;
         this.vida = vida;
         this.daño = daño;
     }
 
-
-    //metodo moverse
-
-    public void interaccion(char interactuar){
-
-        char mvs = Character.toLowerCase(interactuar);
-
-        switch (mvs) {
-
-            case 'a': System.out.println(nombre+" se mueve hacia la izquierda");
-             break;
-            
-            case 'd': System.out.println(nombre+" se mueve hacia la derecha");
-             break;
-
-            case 's': System.out.println(nombre+" se mueve hacia arriba");
-             break;
-
-            case 'w': System.out.println(nombre+" se mueve hacia abajo");
-
-            default :System.out.println("use las teclas (a , d , s , w ) para moverse");    
-                
-                break;
-     
-        }
-
-    }
-
-
-
-    //metodos atacar enemigo 
-
-     
-   public void atacar(Enemigo enemigo){
-
-        System.out.println(nombre+" ataca al enemigo "+ enemigo.getTipo());
+    // Método atacar enemigo 
+    public void atacar(Enemigo enemigo){
+        System.out.println(nombre + " ataca al enemigo " + enemigo.getTipo());
         enemigo.recibirDisparo(daño);
-
     }
 
-
-
-    //metodo recibir daño 
-
+    // Método recibir daño 
     public void recibirDaño(int cantidad){
         vida -= cantidad;
 
-        if(vida < 0 ){
-            vida = 0 ;
+        if(vida < 0){
+            vida = 0;
         }
-        System.out.println(nombre +" recive "+ cantidad +" de daño. Vida restante "+ vida);
+        System.out.println(nombre + " recibe " + cantidad + " de daño. Vida restante: " + vida);
     }
 
-    //metodo seguir vivo 
-
+    // Método seguir vivo 
     public boolean estaVivo() {
-        return vida > 0 ; //se usa en main
-
+        return vida > 0;
     }
 
+    // Getters
     public int getVida() {
-    return vida;
-}
+        return vida;
+    }
 
+    public String getNombre(){
+        return nombre;
+    }
+
+    public int getDaño(){
+        return daño;
+    }
 }
