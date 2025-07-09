@@ -38,7 +38,7 @@ public class CampoDeBatalla {
     private void actualizarCampo() {
         llenarCampoVacio();
         if (enemigo.estaVivo()) {
-            campo[enemigo.getFila()][enemigo.getColumna()] = 'E'; // ✅ usa la posición del enemigo real
+            campo[enemigo.getFila()][enemigo.getColumna()] = 'E'; // usa la posición del enemigo real
         }
         campo[navefil][navecol] = 'N';
     }
