@@ -99,6 +99,11 @@ public class CampoDeBatalla {
         return enemigo;
     }
     
+    public boolean hayColision() {
+    return navefil == enemigo.getFila() && navecol == enemigo.getColumna();
+    }
+
+
 }
 
     

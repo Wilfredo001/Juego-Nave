@@ -42,14 +42,19 @@ public class Main {
 
                 enemigo.atacar(jugador);
            }
-        /* if (campo1.hayColision()) {
+           
+            if (campo1.hayColision()) {
             enemigo.colisionarConNave(jugador);
-              }  */
+            } 
   
         }
 
         if (!enemigo.estaVivo()) {
             System.out.println("¡Has derrotado al enemigo!");
+        }
+
+        if (campo1.hayColision()) {
+        campo1.getEnemigo().colisionarConNave(jugador);
         }
 
         sc.close();

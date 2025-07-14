@@ -50,6 +50,10 @@ public class Enemigo {
         return vida;
     }
 
+    public int getDaño() {
+    return daño;
+}
+
     public int getFila() {
     return fila;
 }
@@ -79,6 +83,23 @@ public void moverAleatoriamente(int maxFilas, int maxColumnas) {
     }
 
     System.out.println(tipo + " se mueve a (" + fila + ", " + columna + ")");
+}
+
+public void explotar(Nave nave) {
+    int dañoExplosion = 10;
+    System.out.println("#" + tipo + " explota causando " + dañoExplosion + " de daño a la nave.");
+    nave.recibirDaño(dañoExplosion);
+}
+
+public void colisionarConNave(Nave nave) {
+    int dañoColision = 10;
+    System.out.println("¡Colisión detectada! Ambos pierden " + dañoColision + " de vida.");
+    this.recibirDisparo(dañoColision);
+    nave.recibirDaño(dañoColision);
+
+    if (!estaVivo()) {
+        explotar(nave);
+    }
 }
 
 }
