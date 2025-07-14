@@ -58,6 +58,8 @@ public int getColumna() {
     return columna;
 }
 
+
+
 private Random random = new Random();
 
 public void moverAleatoriamente(int maxFilas, int maxColumnas) {
