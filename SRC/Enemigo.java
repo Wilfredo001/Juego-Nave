@@ -92,7 +92,7 @@ public void explotar(Nave nave) {
 }
 
 public void colisionarConNave(Nave nave) {
-    int dañoColision = 10;
+    int dañoColision = 5;
     System.out.println("¡Colisión detectada! Ambos pierden " + dañoColision + " de vida.");
     this.recibirDisparo(dañoColision);
     nave.recibirDaño(dañoColision);
