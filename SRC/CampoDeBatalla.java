@@ -1,32 +1,29 @@
 package SRC;
 
-
 public class CampoDeBatalla {
 
     private char[][] campo;
-    private int navefil, navecol; 
-    private int enemigofil, enemigocol;
+    private int navefil, navecol;
     private String nombreNave;
-    private Enemigo enemigo;
-    private Proyectil[] proyectiles = new Proyectil[10]; // máximo 10 proyectiles activos
-  
 
-
+    private Enemigo[] enemigos = new Enemigo[3];
+    private Proyectil[] proyectiles = new Proyectil[10];           // proyectiles de la nave
+    private Proyectil[] proyectilesEnemigo = new Proyectil[20];    // proyectiles de todos los enemigos
 
     public CampoDeBatalla(String nombreNave) {
         this.nombreNave = nombreNave;
-        campo = new char[20][40];  // filas y columnas 
+        campo = new char[20][40];
+
         llenarCampoVacio();
-        
-        //posicionar nave
-        navefil = campo.length -1;
-        navecol = campo[0].length /2;
 
-        //posicionar enemigo 
-        enemigofil = 0;
-        enemigocol = campo[0].length/2;
+        navefil = campo.length - 1;
+        navecol = campo[0].length / 2;
 
-        enemigo = new Enemigo("Alien", 80, 7, enemigofil, enemigocol);
+        // Crear los 5 enemigos en fila superior separados horizontalmente
+        for (int i = 0; i < enemigos.length; i++) {
+            int col = 5 + i * 12; // separa mejor a 3 enemigos en campo de 40 columnas
+            enemigos[i] = new Enemigo("Alien", 80, 7, 0, col);
+        }
 
         actualizarCampo();
     }
@@ -40,26 +37,36 @@ public class CampoDeBatalla {
     }
 
     private void dibujarProyectiles() {
-    for (Proyectil p : proyectiles) {
-        if (p != null && p.estaActivo()) {
-            int f = p.getFila();
-            int c = p.getColumna();
-            if (f >= 0 && f < campo.length && c >= 0 && c < campo[0].length) {
-                campo[f][c] = '*';
+        for (Proyectil p : proyectiles) {
+            if (p != null && p.estaActivo()) {
+                int f = p.getFila();
+                int c = p.getColumna();
+                if (f >= 0 && f < campo.length && c >= 0 && c < campo[0].length) {
+                    campo[f][c] = '*';
+                }
+            }
+        }
+
+        for (Proyectil p : proyectilesEnemigo) {
+            if (p != null && p.estaActivo()) {
+                int f = p.getFila();
+                int c = p.getColumna();
+                if (f >= 0 && f < campo.length && c >= 0 && c < campo[0].length) {
+                    campo[f][c] = '!';
+                }
             }
         }
     }
-}
-
 
     private void actualizarCampo() {
         llenarCampoVacio();
-        if (enemigo.estaVivo()) {
-            campo[enemigo.getFila()][enemigo.getColumna()] = 'E'; // usa la posición del enemigo real
+        for (Enemigo e : enemigos) {
+            if (e.estaVivo()) {
+                campo[e.getFila()][e.getColumna()] = 'E';
+            }
         }
         campo[navefil][navecol] = 'N';
         dibujarProyectiles();
-
     }
 
     public void mostrarCampo() {
@@ -72,80 +79,128 @@ public class CampoDeBatalla {
         }
     }
 
-    //metodo para mover la nave (con mensajes
-    public void moverNave(char direccion){
+    public void moverNave(char direccion) {
         switch (direccion) {
             case 'w':
-              if(navefil > 0){
-                  navefil--;
-                  System.out.println(nombreNave + " se mueve hacia arriba.");
-              }
-              break;
-
-            case 's': 
-              if (navefil < campo.length -1){
-                  navefil++;
-                  System.out.println(nombreNave + " se mueve hacia abajo.");
-              }
-              break;
-
+                if (navefil > 0) {
+                    navefil--;
+                    System.out.println(nombreNave + " se mueve hacia arriba.");
+                }
+                break;
+            case 's':
+                if (navefil < campo.length - 1) {
+                    navefil++;
+                    System.out.println(nombreNave + " se mueve hacia abajo.");
+                }
+                break;
             case 'a':
-              if(navecol > 0){
-                  navecol--;
-                  System.out.println(nombreNave + " se mueve hacia la izquierda.");
-              }
-              break;
-
+                if (navecol > 0) {
+                    navecol--;
+                    System.out.println(nombreNave + " se mueve hacia la izquierda.");
+                }
+                break;
             case 'd':
-              if(navecol < campo[0].length -1){
-                  navecol++;
-                  System.out.println(nombreNave + " se mueve hacia la derecha.");
-              }
-              break;
-        
+                if (navecol < campo[0].length - 1) {
+                    navecol++;
+                    System.out.println(nombreNave + " se mueve hacia la derecha.");
+                }
+                break;
             default:
-              System.out.println("Usa solo las teclas [W, A, S, D] para moverte.");
-              break;
+                System.out.println("Usa solo las teclas [W, A, S, D] para moverte.");
+                break;
         }
     }
 
     public void dispararDesdeNave(int daño) {
-    for (int i = 0; i < proyectiles.length; i++) {
-        if (proyectiles[i] == null || !proyectiles[i].estaActivo()) {
-            proyectiles[i] = new Proyectil(navefil - 1, navecol, daño, -1);
-            System.out.println(" Proyectil disparado desde la nave");
-            break;
+        for (int i = 0; i < proyectiles.length; i++) {
+            if (proyectiles[i] == null || !proyectiles[i].estaActivo()) {
+                proyectiles[i] = new Proyectil(navefil - 1, navecol, daño, -1);
+                System.out.println("Proyectil disparado desde la nave");
+                break;
+            }
         }
     }
-}
 
-public void moverProyectiles() {
-    for (Proyectil p : proyectiles) {
+    public void dispararDesdeEnemigo(int fila, int columna, int daño) {
+        for (int i = 0; i < proyectilesEnemigo.length; i++) {
+            if (proyectilesEnemigo[i] == null || !proyectilesEnemigo[i].estaActivo()) {
+                proyectilesEnemigo[i] = new Proyectil(fila + 1, columna, daño, +1);
+                System.out.println(" Un enemigo ha disparado un proyectil");
+                break;
+            }
+        }
+    }
+
+    public void moverProyectiles() {
+        for (Proyectil p : proyectiles) {
+            if (p != null && p.estaActivo()) {
+                p.mover();
+                int f = p.getFila();
+                int c = p.getColumna();
+
+                for (Enemigo e : enemigos) {
+                    if (e.estaVivo() && f == e.getFila() && c == e.getColumna()) {
+                        e.recibirDisparo(p.getDaño());
+                        System.out.println(" Proyectil impactó al enemigo en (" + f + ", " + c + ")");
+                        p.desactivar();
+                    }
+                }
+            }
+        }
+    }
+
+   public void moverProyectilesEnemigo(Nave nave) {
+    for (Proyectil p : proyectilesEnemigo) {
         if (p != null && p.estaActivo()) {
             p.mover();
             int f = p.getFila();
             int c = p.getColumna();
-            if (f == enemigo.getFila() && c == enemigo.getColumna()) {
-                enemigo.recibirDisparo(p.getDaño());
+
+            //  impacto de bala 
+            
+            if (f == navefil && c == navecol) {
+                System.out.println(" ¡Proyectil enemigo impactó en la nave!");
+                nave.recibirDaño(p.getDaño());
                 p.desactivar();
             }
         }
     }
 }
- 
 
-    public void moverEnemigo() {
-        enemigo.moverAleatoriamente(campo.length, campo[0].length);
+
+    public void moverEnemigos() {
+        for (Enemigo e : enemigos) {
+            if (e.estaVivo()) {
+                e.moverAleatoriamente(campo.length / 2, campo[0].length); // solo hasta mitad del campo
+            }
+        }
     }
 
-    // Getter para que el Main acceda al enemigo real
-    public Enemigo getEnemigo() {
-        return enemigo;
+    public void enemigosDisparan() {
+        for (Enemigo e : enemigos) {
+            if (e.estaVivo() && Math.random() < 0.3) {
+                dispararDesdeEnemigo(e.getFila(), e.getColumna(), e.getDaño());
+            }
+        }
     }
-    
+
+    public Enemigo[] getEnemigos() {
+        return enemigos;
+    }
+
     public boolean hayColision() {
-    return navefil == enemigo.getFila() && navecol == enemigo.getColumna();
+        for (Enemigo e : enemigos) {
+            if (e.estaVivo() && navefil == e.getFila() && navecol == e.getColumna()) {
+                return true;
+            }
+        }
+        return false;
     }
+<<<<<<< HEAD
 
 
 }
+=======
+    
+}
+>>>>>>> bb83e1c0a17b36139cbea5b887d24a773a0aa792

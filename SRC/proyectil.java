@@ -41,4 +41,5 @@ public class Proyectil {
     public void desactivar() {
         activo = false;
     }
+    
 }
