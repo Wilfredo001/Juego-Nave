@@ -9,6 +9,8 @@ public class CampoDeBatalla {
     private String nombreNave;
     private Enemigo enemigo;
     private Proyectil[] proyectiles = new Proyectil[10]; // máximo 10 proyectiles activos
+    private Proyectil[] proyectilesEnemigo = new Proyectil[10]; // proyectiles del enemigo
+
   
 
 
@@ -46,6 +48,16 @@ public class CampoDeBatalla {
             int c = p.getColumna();
             if (f >= 0 && f < campo.length && c >= 0 && c < campo[0].length) {
                 campo[f][c] = '*';
+            }
+        }
+    }
+
+    for (Proyectil p : proyectilesEnemigo) {
+        if (p != null && p.estaActivo()) {
+            int f = p.getFila();
+            int c = p.getColumna();
+            if (f >= 0 && f < campo.length && c >= 0 && c < campo[0].length) {
+                campo[f][c] = '!';
             }
         }
     }
@@ -119,6 +131,17 @@ public class CampoDeBatalla {
     }
 }
 
+public void dispararDesdeEnemigo(int daño) {
+    for (int i = 0; i < proyectilesEnemigo.length; i++) {
+        if (proyectilesEnemigo[i] == null || !proyectilesEnemigo[i].estaActivo()) {
+            proyectilesEnemigo[i] = new Proyectil(enemigo.getFila() + 1, enemigo.getColumna(), daño, +1);
+            System.out.println("💥 El enemigo ha disparado un proyectil");
+            break;
+       }
+    }
+}
+
+
 public void moverProyectiles() {
     for (Proyectil p : proyectiles) {
         if (p != null && p.estaActivo()) {
@@ -127,6 +150,20 @@ public void moverProyectiles() {
             int c = p.getColumna();
             if (f == enemigo.getFila() && c == enemigo.getColumna()) {
                 enemigo.recibirDisparo(p.getDaño());
+                p.desactivar();
+            }
+        }
+    }
+}
+
+public void moverProyectilesEnemigo(Nave nave) {
+    for (Proyectil p : proyectilesEnemigo) {
+        if (p != null && p.estaActivo()) {
+            p.mover();
+            int f = p.getFila();
+            int c = p.getColumna();
+            if (f == navefil && c == navecol) {
+                nave.recibirDaño(p.getDaño());
                 p.desactivar();
             }
         }

@@ -11,14 +11,14 @@ public class Main {
             mostrarMenu();
 
             System.out.print("Elige una opción: ");
-            String opcion = sc.nextLine();  // 🔹 ESTA línea faltaba
+            String opcion = sc.nextLine();  //  ESTA línea faltaba
 
             if (opcion.equals("1")) {
                 System.out.print("Ingresa el nombre de tu nave: ");
                 String nombreNave = sc.nextLine();
 
                 // Crear objetos
-                Nave jugador = new Nave(nombreNave, 250, 10);
+                Nave jugador = new Nave(nombreNave, 100, 10);
                 Enemigo enemigo = new Enemigo("Alien", 80, 7, 0, 10);
                 CampoDeBatalla campo1 = new CampoDeBatalla(nombreNave);
 
@@ -51,39 +51,42 @@ public class Main {
                     campo1.moverEnemigo();
                     campo1.moverProyectiles();
 
+                    // enemigo dispara con probabilidad del 30%
+                    if (Math.random() < 0.3 && campo1.getEnemigo().estaVivo()) {
+                        campo1.dispararDesdeEnemigo(campo1.getEnemigo().getDaño());
+                    }
+                        campo1.moverProyectilesEnemigo(jugador);
+
 
                     if (campo1.hayColision()) {
                         campo1.getEnemigo().colisionarConNave(jugador);
                     }
-
-                    if (campo1.getEnemigo().estaVivo()) {
-                        campo1.getEnemigo().atacar(jugador);
+                    
                     }
+
+                    if (!jugador.estaVivo()) {
+                        System.out.println("Has sido derrotado. ¡Game Over!");
+                    } else if (!campo1.getEnemigo().estaVivo()) {
+                        System.out.println("¡Has derrotado al enemigo!");
+                    }
+
+                    break; // termina juego después de la batalla
+
+                } else if (opcion.equals("2")) {
+                    System.out.println("Hasta luego. Gracias por jugar.");
+                    break;
+
+                } else {
+                    System.out.println("Opción no válida. Intenta nuevamente.\n");
                 }
-
-                if (!jugador.estaVivo()) {
-                    System.out.println("Has sido derrotado. ¡Game Over!");
-                } else if (!campo1.getEnemigo().estaVivo()) {
-                    System.out.println("¡Has derrotado al enemigo!");
-                }
-
-                break; // termina juego después de la batalla
-
-            } else if (opcion.equals("2")) {
-                System.out.println("Hasta luego. Gracias por jugar.");
-                break;
-
-            } else {
-                System.out.println("Opción no válida. Intenta nuevamente.\n");
             }
-        }
 
-        sc.close();
-    }
+            sc.close();
+        }
 
     public static void mostrarMenu() {
         System.out.println("╔═══════════════════════════════════╗");
-        System.out.println("║          🚀 JUEGO DE BATALLA      ║");
+        System.out.println("║           JUEGO DE BATALLA        ║");
         System.out.println("╠═══════════════════════════════════╣");
         System.out.println("║  1. Iniciar partida               ║");
         System.out.println("║  2. Salir del juego               ║");
