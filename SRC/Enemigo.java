@@ -57,6 +57,9 @@ public class Enemigo {
 public int getColumna() {
     return columna;
 }
+public int getDaño(){
+    return daño;
+}
 
 
 
