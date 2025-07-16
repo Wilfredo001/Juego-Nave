@@ -19,9 +19,9 @@ public class CampoDeBatalla {
         navefil = campo.length - 1;
         navecol = campo[0].length / 2;
 
-        // Crear los 5 enemigos en fila superior separados horizontalmente
+        // Crear los 3 enemigos
         for (int i = 0; i < enemigos.length; i++) {
-            int col = 5 + i * 12; // separa mejor a 3 enemigos en campo de 40 columnas
+            int col = 5 + i * 12; 
             enemigos[i] = new Enemigo("Alien", 80, 7, 0, col);
         }
 

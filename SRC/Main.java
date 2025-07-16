@@ -24,7 +24,7 @@ public class Main {
                 // Mostrar info inicial
                 System.out.println("\n ESTADÍSTICAS INICIALES:");
                 System.out.println(" Nave: " + jugador.getNombre() + " | Vida: " + jugador.getVida() + " | Daño: " + jugador.getDaño());
-                System.out.println(" Enemigos: 5 x Alien (Vida: 200 | Daño: 7)");
+                System.out.println(" Enemigos: 3 x Alien (Vida: 80 | Daño: 7)");
                 System.out.println("\n¡Batalla iniciada!\n");
 
                 // Bucle principal de batalla
