@@ -8,10 +8,14 @@ public class CampoDeBatalla {
     private int enemigofil, enemigocol;
     private String nombreNave;
     private Enemigo enemigo;
+    private Proyectil[] proyectiles = new Proyectil[10]; // máximo 10 proyectiles activos
+  
+
+
 
     public CampoDeBatalla(String nombreNave) {
         this.nombreNave = nombreNave;
-        campo = new char[10][20];  // 10 filas, 20 columnas
+        campo = new char[20][40];  // filas y columnas 
         llenarCampoVacio();
         
         //posicionar nave
@@ -35,12 +39,27 @@ public class CampoDeBatalla {
         }
     }
 
+    private void dibujarProyectiles() {
+    for (Proyectil p : proyectiles) {
+        if (p != null && p.estaActivo()) {
+            int f = p.getFila();
+            int c = p.getColumna();
+            if (f >= 0 && f < campo.length && c >= 0 && c < campo[0].length) {
+                campo[f][c] = '*';
+            }
+        }
+    }
+}
+
+
     private void actualizarCampo() {
         llenarCampoVacio();
         if (enemigo.estaVivo()) {
             campo[enemigo.getFila()][enemigo.getColumna()] = 'E'; // usa la posición del enemigo real
         }
         campo[navefil][navecol] = 'N';
+        dibujarProyectiles();
+
     }
 
     public void mostrarCampo() {
@@ -90,6 +109,31 @@ public class CampoDeBatalla {
         }
     }
 
+    public void dispararDesdeNave(int daño) {
+    for (int i = 0; i < proyectiles.length; i++) {
+        if (proyectiles[i] == null || !proyectiles[i].estaActivo()) {
+            proyectiles[i] = new Proyectil(navefil - 1, navecol, daño, -1);
+            System.out.println(" Proyectil disparado desde la nave");
+            break;
+        }
+    }
+}
+
+public void moverProyectiles() {
+    for (Proyectil p : proyectiles) {
+        if (p != null && p.estaActivo()) {
+            p.mover();
+            int f = p.getFila();
+            int c = p.getColumna();
+            if (f == enemigo.getFila() && c == enemigo.getColumna()) {
+                enemigo.recibirDisparo(p.getDaño());
+                p.desactivar();
+            }
+        }
+    }
+}
+ 
+
     public void moverEnemigo() {
         enemigo.moverAleatoriamente(campo.length, campo[0].length);
     }
@@ -105,4 +149,3 @@ public class CampoDeBatalla {
 
 
 }
-    

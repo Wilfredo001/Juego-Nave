@@ -7,56 +7,86 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Ingresa el nombre de tu nave: ");
-        String nombreNave = sc.nextLine();
+        while (true) {
+            mostrarMenu();
 
-        Nave jugador = new Nave(nombreNave, 100, 10);
-        Enemigo enemigo = new Enemigo("Alien", 80, 7, 0, 10);
-        CampoDeBatalla campo1 = new CampoDeBatalla(nombreNave);
+            System.out.print("Elige una opción: ");
+            String opcion = sc.nextLine();  // 🔹 ESTA línea faltaba
 
-        System.out.println("\n¡Batalla iniciada!");
-        System.out.println("Jugador: " + jugador.getNombre() + " | Vida: " + jugador.getVida());
-        System.out.println("Enemigo: " + enemigo.getTipo() + " | Vida: " + enemigo.getVida());
+            if (opcion.equals("1")) {
+                System.out.print("Ingresa el nombre de tu nave: ");
+                String nombreNave = sc.nextLine();
 
-        while (jugador.estaVivo() && enemigo.estaVivo()) {
-            campo1.mostrarCampo();
+                // Crear objetos
+                Nave jugador = new Nave(nombreNave, 250, 10);
+                Enemigo enemigo = new Enemigo("Alien", 80, 7, 0, 10);
+                CampoDeBatalla campo1 = new CampoDeBatalla(nombreNave);
 
-            System.out.println("\nUsa [w, a, s, d] para moverte | f = disparar | x = salir");
-            System.out.print("Acción: ");
-            char accion = sc.next().toLowerCase().charAt(0);
+                // Mostrar info inicial
+                System.out.println("\n ESTADÍSTICAS INICIALES:");
+                System.out.println("🔹 Nave: " + jugador.getNombre() + " | Vida: " + jugador.getVida() + " | Daño: " + jugador.getDaño());
+                System.out.println("🔺 Enemigo: " + enemigo.getTipo() + " | Vida: " + enemigo.getVida() + " | Daño: " + enemigo.getDaño());
+                System.out.println("\n¡Batalla iniciada!\n");
 
-            if(accion == 'x'){
-                System.out.println("Saliendo del juego...");
+                // Bucle principal de batalla
+                while (jugador.estaVivo() && enemigo.estaVivo()) {
+                    campo1.mostrarCampo();
+
+                    System.out.println("\nControles: [W/A/S/D] Mover | [F] Atacar | [X] Salir");
+                    System.out.print("Acción: ");
+                    char accion = sc.next().toLowerCase().charAt(0);
+                    sc.nextLine(); // ← limpiar el buffer
+
+                    if (accion == 'x') {
+                        System.out.println("Juego finalizado por el jugador.");
+                        break;
+                    }
+
+                    if (accion == 'f') {
+                        campo1.dispararDesdeNave(jugador.getDaño());
+                    }else {
+                        campo1.moverNave(accion);
+                    }
+
+                    campo1.moverEnemigo();
+                    campo1.moverProyectiles();
+
+
+                    if (campo1.hayColision()) {
+                        campo1.getEnemigo().colisionarConNave(jugador);
+                    }
+
+                    if (campo1.getEnemigo().estaVivo()) {
+                        campo1.getEnemigo().atacar(jugador);
+                    }
+                }
+
+                if (!jugador.estaVivo()) {
+                    System.out.println("Has sido derrotado. ¡Game Over!");
+                } else if (!campo1.getEnemigo().estaVivo()) {
+                    System.out.println("¡Has derrotado al enemigo!");
+                }
+
+                break; // termina juego después de la batalla
+
+            } else if (opcion.equals("2")) {
+                System.out.println("Hasta luego. Gracias por jugar.");
                 break;
-            }
 
-            if(accion == 'f'){
-                jugador.atacar(enemigo);
             } else {
-                campo1.moverNave(accion); // mostrar mensaje + nombre 
+                System.out.println("Opción no válida. Intenta nuevamente.\n");
             }
-
-             campo1.moverEnemigo(); //<- metodo moverEnemigo 
-
-            if (enemigo.estaVivo()) {
-
-                enemigo.atacar(jugador);
-           }
-           
-            if (campo1.hayColision()) {
-            enemigo.colisionarConNave(jugador);
-            } 
-  
-        }
-
-        if (!enemigo.estaVivo()) {
-            System.out.println("¡Has derrotado al enemigo!");
-        }
-
-        if (campo1.hayColision()) {
-        campo1.getEnemigo().colisionarConNave(jugador);
         }
 
         sc.close();
+    }
+
+    public static void mostrarMenu() {
+        System.out.println("╔═══════════════════════════════════╗");
+        System.out.println("║          🚀 JUEGO DE BATALLA      ║");
+        System.out.println("╠═══════════════════════════════════╣");
+        System.out.println("║  1. Iniciar partida               ║");
+        System.out.println("║  2. Salir del juego               ║");
+        System.out.println("╚═══════════════════════════════════╝");
     }
 }

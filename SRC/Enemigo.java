@@ -50,10 +50,6 @@ public class Enemigo {
         return vida;
     }
 
-    public int getDaño() {
-    return daño;
-}
-
     public int getFila() {
     return fila;
 }
@@ -61,6 +57,11 @@ public class Enemigo {
 public int getColumna() {
     return columna;
 }
+public int getDaño(){
+    return daño;
+}
+
+
 
 private Random random = new Random();
 
