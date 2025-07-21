@@ -4,7 +4,7 @@ public class Proyectil {
     private int fila;
     private int columna;
     private int daño;
-    private int direccion; // -1 para arriba (nave), +1 para abajo (enemigo)
+    private int direccion; 
     private boolean activo;
 
     public Proyectil(int fila, int columna, int daño, int direccion) {
@@ -41,5 +41,4 @@ public class Proyectil {
     public void desactivar() {
         activo = false;
     }
-    
 }

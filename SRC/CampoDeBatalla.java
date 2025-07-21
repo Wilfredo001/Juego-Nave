@@ -5,8 +5,18 @@ public class CampoDeBatalla {
     private char[][] campo;
     private int navefil, navecol;
     private String nombreNave;
+    private int puntosAcumulados = 0;
+    private int puntos = 0;
+    public static int puntosAcumuladosGlobales = 0;
+
+
 
     private Enemigo[] enemigos = new Enemigo[3];
+    private int totalEnemigosGenerados = 3; // ya creaste 3 al inicio
+    private int enemigosMaximos = 8;
+    private int enemigosMuertos = 0;
+
+
     private Proyectil[] proyectiles = new Proyectil[10];           // proyectiles de la nave
     private Proyectil[] proyectilesEnemigo = new Proyectil[20];    // proyectiles de todos los enemigos
 
@@ -19,14 +29,29 @@ public class CampoDeBatalla {
         navefil = campo.length - 1;
         navecol = campo[0].length / 2;
 
-        // Crear los 5 enemigos en fila superior separados horizontalmente
+        // Crear los 3 enemigos
         for (int i = 0; i < enemigos.length; i++) {
-            int col = 5 + i * 12; // separa mejor a 3 enemigos en campo de 40 columnas
-            enemigos[i] = new Enemigo("Alien", 80, 7, 0, col);
+            int col = 5 + i * 12; 
+            enemigos[i] = new Enemigo("Alien", 10, 7, 0, col);
         }
 
         actualizarCampo();
     }
+
+    private void agregarNuevoEnemigo() {
+    if (totalEnemigosGenerados >= enemigosMaximos) return;
+
+    for (int i = 0; i < enemigos.length; i++) {
+        if (!enemigos[i].estaVivo()) {
+            int nuevaColumna = 5 + (int)(Math.random() * 30); // rango horizontal
+            enemigos[i] = new Enemigo("Alien", 10, 7, 0, nuevaColumna);
+            totalEnemigosGenerados++;
+            System.out.println("🛸 Nuevo enemigo apareció en la columna " + nuevaColumna);
+            break;
+        }
+    }
+}
+
 
     private void llenarCampoVacio() {
         for (int i = 0; i < campo.length; i++) {
@@ -131,30 +156,44 @@ public class CampoDeBatalla {
         }
     }
 
-    public void moverProyectiles() {
-        for (Proyectil p : proyectiles) {
-            if (p != null && p.estaActivo()) {
-                p.mover();
-                int f = p.getFila();
-                int c = p.getColumna();
-
-                for (Enemigo e : enemigos) {
-                    if (e.estaVivo() && f == e.getFila() && c == e.getColumna()) {
-                        e.recibirDisparo(p.getDaño());
-                        System.out.println(" Proyectil impactó al enemigo en (" + f + ", " + c + ")");
-                        p.desactivar();
-                    }
-                }
-            }
-        }
-    }
-
-   public void moverProyectilesEnemigo(Nave nave) {
-    for (Proyectil p : proyectilesEnemigo) {
+        public void moverProyectiles() {
+            for (Proyectil p : proyectiles) {
         if (p != null && p.estaActivo()) {
             p.mover();
             int f = p.getFila();
             int c = p.getColumna();
+
+            for (Enemigo e : enemigos) {
+                if (e.estaVivo() && f == e.getFila() && c == e.getColumna()) {
+                    e.recibirDisparo(p.getDaño());
+                    System.out.println(" Proyectil impactó al enemigo en (" + f + ", " + c + ")");
+                    p.desactivar();
+
+                    if (!e.estaVivo()) {
+                        puntos++; 
+                        puntosAcumulados++;
+                        puntosAcumuladosGlobales++; // puntaje total acumulado 
+                        enemigosMuertos++;
+                        System.out.println("¡Enemigo destruido! +1 punto. Puntos totales: " + puntos);
+                        agregarNuevoEnemigo();
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+
+   public void moverProyectilesEnemigo(Nave nave) {
+    for (Proyectil p : proyectilesEnemigo) {
+        
+
+        if (p != null && p.estaActivo()) {
+            p.mover();
+            int f = p.getFila();
+            int c = p.getColumna();
+
 
             //  impacto de bala 
             
@@ -188,6 +227,30 @@ public class CampoDeBatalla {
         return enemigos;
     }
 
+    public int getNaveFila() {
+    return navefil;
+    }
+
+    public int getNaveColumna() {
+        return navecol;
+    }
+
+    public int getPuntosAcumulados() {
+    return puntosAcumulados;
+    }
+
+    public int getEnemigosMuertos() {
+    return enemigosMuertos;
+    }
+
+    public int getPuntos() {
+    return puntos;
+    }
+
+    public static int getPuntosAcumuladosGlobales() {
+    return puntosAcumuladosGlobales;
+    }
+
     public boolean hayColision() {
         for (Enemigo e : enemigos) {
             if (e.estaVivo() && navefil == e.getFila() && navecol == e.getColumna()) {
@@ -196,11 +259,13 @@ public class CampoDeBatalla {
         }
         return false;
     }
-<<<<<<< HEAD
 
-
+    public boolean restarPuntos(int cantidad) {
+    if (puntos >= cantidad) {
+        puntos -= cantidad;
+        return true;
+    } else {
+        return false;
+    }
 }
-=======
-    
 }
->>>>>>> bb83e1c0a17b36139cbea5b887d24a773a0aa792
