@@ -21,14 +21,16 @@ public class Nave {
     }
 
     // Método recibir daño 
-    public void recibirDaño(int cantidad){
+public void recibirDaño(int cantidad) {
+    if (cantidad > 0) {
         vida -= cantidad;
-
-        if(vida < 0){
-            vida = 0;
-        }
         System.out.println(nombre + " recibe " + cantidad + " de daño. Vida restante: " + vida);
+    } else {
+        vida -= cantidad; // negativo, así que suma
+        System.out.println(nombre + " recupera " + (-cantidad) + " de vida. Vida restante: " + vida);
     }
+}
+
 
     // Método seguir vivo 
     public boolean estaVivo() {
